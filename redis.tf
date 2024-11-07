@@ -20,5 +20,5 @@ module "pcs_redis" {
 resource "azurerm_key_vault_secret" "redis_connection_string" {
   name         = "redis-connection-string"
   value        = "rediss://:${urlencode(module.pcs_redis.access_key)}@${module.pcs_redis.host_name}:${module.pcs_redis.redis_port}?tls=true"
-  key_vault_id = module.key_vault.key_vault_id
+  key_vault_id = module.key-vault.key_vault_id
 }
