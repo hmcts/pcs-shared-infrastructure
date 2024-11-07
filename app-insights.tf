@@ -7,6 +7,7 @@ module "application_insights" {
   resource_group_name = azurerm_resource_group.rg.name
   application_type    = "other"
   common_tags         = var.common_tags
+  alert_limit_reached = true
 }
 
 resource "azurerm_key_vault_secret" "app_insights_connection_string" {
