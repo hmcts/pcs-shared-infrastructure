@@ -5,7 +5,7 @@ module "pcs_redis" {
   env                           = var.env
   common_tags                   = var.common_tags
   redis_version                 = "6"
-  business_area                 = "sds"
+  business_area                 = "cft"
   private_endpoint_enabled      = true
   public_network_access_enabled = false
   sku_name                      = var.sku_name
