@@ -12,9 +12,6 @@ module "pcs_redis" {
   family                        = var.family
   capacity                      = var.capacity
   resource_group_name           = azurerm_resource_group.rg.name
-
-  maxmemory_reserved              = var.maxmemory_reserved
-  maxfragmentationmemory_reserved = var.maxfragmentationmemory_reserved
 }
 
 resource "azurerm_key_vault_secret" "redis_connection_string" {
