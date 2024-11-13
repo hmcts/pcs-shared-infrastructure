@@ -15,3 +15,13 @@ module "key-vault" {
 output "vaultName" {
   value = module.key-vault.key_vault_name
 }
+
+resource "random_string" "session-secret" {
+  length = 16
+}
+
+resource "azurerm_key_vault_secret" "pcs-session-secret" {
+  name         = "pcs-session-secret"
+  value        = random_string.session-secret.result
+  key_vault_id = module.key-vault.key_vault_id
+}
