@@ -25,3 +25,31 @@ resource "azurerm_key_vault_secret" "pcs-session-secret" {
   value        = random_string.session-secret.result
   key_vault_id = module.key-vault.key_vault_id
 }
+
+
+data "azurerm_key_vault" "s2s_vault" {
+  name                = "s2s-${var.env}"
+  resource_group_name = "rpe-service-auth-provider-${var.env}"
+}
+
+data "azurerm_key_vault_secret" "api_s2s_key_from_vault" {
+  name         = "microservicekey-pcs-api"
+  key_vault_id = data.azurerm_key_vault.s2s_vault.id
+}
+
+resource "azurerm_key_vault_secret" "pcs-api-s2s-secret" {
+  name         = "pcs-api-s2s-secret"
+  value        = data.azurerm_key_vault_secret.api_s2s_key_from_vault.value
+  key_vault_id = module.key-vault.key_vault_id
+}
+
+data "azurerm_key_vault_secret" "frontend_s2s_key_from_vault" {
+  name         = "microservicekey-pcs-frontend"
+  key_vault_id = data.azurerm_key_vault.s2s_vault.id
+}
+
+resource "azurerm_key_vault_secret" "pcs-frontend-s2s-secret" {
+  name         = "pcs-frontend-s2s-secret"
+  value        = data.azurerm_key_vault_secret.frontend_s2s_key_from_vault.value
+  key_vault_id = module.key-vault.key_vault_id
+}
