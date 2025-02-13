@@ -47,7 +47,7 @@ data "azurerm_key_vault_secret" "hmc-servicebus-shared-access-key" {
   name         = "hmc-servicebus-shared-access-key"
 }
 
-resource "azurerm_key_vault_secret" "hmc-servicebus-shared-access-key-tf" {
+resource "azurerm_key_vault_secret" "hmc-servicebus-shared-access-key" {
   name         = "hmc-servicebus-shared-access-key"
   value        = data.azurerm_key_vault_secret.hmc-servicebus-shared-access-key.value
   key_vault_id = module.key-vault.key_vault_id
