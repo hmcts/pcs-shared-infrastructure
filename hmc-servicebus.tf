@@ -8,18 +8,7 @@ module "servicebus-subscription" {
   name         = "hmc-to-${var.product}-subscription-${var.env}"
   namespace_id = data.azurerm_servicebus_namespace.hmc_servicebus_namespace.id
   topic_name   = "hmc-to-cft-${var.env}"
-}
-
-resource "azurerm_servicebus_subscription_rule" "topic_service_id_filter_rule" {
-  name            = "hmc-servicebus-${var.env}-filter-rule"
-  subscription_id = module.servicebus-subscription.id
-  filter_type     = "CorrelationFilter"
-
-  correlation_filter {
-    properties = {
-      hmctsServiceId = var.hmc_service_id
-    }
-  }
+  correlation_filters = var.correlation_filters
 }
 
 data "azurerm_key_vault" "hmc-key-vault" {
