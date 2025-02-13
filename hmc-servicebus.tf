@@ -1,3 +1,13 @@
+locals {
+  correlation_filters = {
+    hmctsProperty_filter : {
+      properties = {
+        hmctsProperty = var.hmc_service_id
+      }
+    }
+  }
+}
+
 data "azurerm_servicebus_namespace" "hmc_servicebus_namespace" {
   name                = join("-", ["hmc-servicebus", var.env])
   resource_group_name = join("-", ["hmc-shared", var.env])
@@ -8,7 +18,7 @@ module "servicebus-subscription" {
   name         = "hmc-to-${var.product}-subscription-${var.env}"
   namespace_id = data.azurerm_servicebus_namespace.hmc_servicebus_namespace.id
   topic_name   = "hmc-to-cft-${var.env}"
-  correlation_filters = var.correlation_filters
+  correlation_filters = local.correlation_filters
 }
 
 data "azurerm_key_vault" "hmc-key-vault" {

@@ -31,9 +31,7 @@ variable "capacity" {
   description = "The size of the Redis cache to deploy. Valid values are 1, 2, 3, 4, 5"
 }
 
-variable "correlation_filters" {
-  type = map(string)
-  default = {
-    hmctsServiceId = "AAA3"
-  }
+variable "hmc_service_id" {
+  default     = "AAA3"
+  description = "Service Id used to filter the messages to subscription"
 }
