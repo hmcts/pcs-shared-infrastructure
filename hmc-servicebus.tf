@@ -4,10 +4,10 @@ data "azurerm_servicebus_namespace" "hmc_servicebus_namespace" {
 }
 
 module "servicebus-subscription" {
-  source       = "git@github.com:hmcts/terraform-module-servicebus-subscription?ref=4.x"
-  name         = "hmc-to-${var.product}-subscription-${var.env}"
-  namespace_id = data.azurerm_servicebus_namespace.hmc_servicebus_namespace.id
-  topic_name   = "hmc-to-cft-${var.env}"
+  source              = "git@github.com:hmcts/terraform-module-servicebus-subscription?ref=4.x"
+  name                = "hmc-to-${var.product}-subscription-${var.env}"
+  namespace_id        = data.azurerm_servicebus_namespace.hmc_servicebus_namespace.id
+  topic_name          = "hmc-to-cft-${var.env}"
   correlation_filters = var.correlation_filters
 }
 
