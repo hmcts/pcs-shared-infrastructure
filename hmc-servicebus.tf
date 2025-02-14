@@ -1,8 +1,8 @@
 locals {
   correlation_filters = {
-    hmctsProperty_filter : {
+    hmctsServiceId_filter : {
       properties = {
-        hmctsProperty = var.hmc_service_id
+        hmctsServiceId = var.hmc_service_id
       }
     }
   }
