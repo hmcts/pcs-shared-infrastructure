@@ -37,6 +37,6 @@ variable "hmc_service_id" {
 }
 
 variable "sampling_percentage" {
-  default     = "1"
+  default     = null
   description = "Specifies the sampling percentage for Application Insights"
 }
