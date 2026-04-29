@@ -35,3 +35,7 @@ variable "hmc_service_id" {
   default     = "AAA3"
   description = "Service Id used to filter the messages to subscription"
 }
+
+variable "sampling_percentage" {
+  description = "Specifies the sampling percentage for Application Insights"
+}
