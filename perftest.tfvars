@@ -1,1 +1,1 @@
-sampling_percentage = 100
+sampling_percentage = "100"
