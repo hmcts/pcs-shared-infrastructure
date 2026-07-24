@@ -60,3 +60,40 @@ resource "azurerm_key_vault_secret" "pcs-frontend-s2s-secret" {
   value        = data.azurerm_key_vault_secret.frontend_s2s_key_from_vault.value
   key_vault_id = module.key-vault.key_vault_id
 }
+
+# CCD definition-importer credentials, consumed by the pipeline's High Level Data Setup
+# stage (withDefinitionImportSecretsAndEnvVars reads definition-importer-username /
+# -password from the pcs-${env} vault). PCS has no dedicated importer service account,
+# so we source civil's shared credentials, matching the sptribs pattern. Not available
+# in ithc, where the civil vault is not reachable.
+data "azurerm_key_vault" "civil_vault" {
+  count               = var.env != "ithc" ? 1 : 0
+  name                = "civil-${var.env}"
+  resource_group_name = "civil-service-${var.env}"
+}
+
+data "azurerm_key_vault_secret" "ccd_importer_username_civil" {
+  count        = var.env != "ithc" ? 1 : 0
+  name         = "ccd-importer-username"
+  key_vault_id = data.azurerm_key_vault.civil_vault[0].id
+}
+
+data "azurerm_key_vault_secret" "ccd_importer_password_civil" {
+  count        = var.env != "ithc" ? 1 : 0
+  name         = "ccd-importer-password"
+  key_vault_id = data.azurerm_key_vault.civil_vault[0].id
+}
+
+resource "azurerm_key_vault_secret" "definition-importer-username" {
+  count        = var.env != "ithc" ? 1 : 0
+  name         = "definition-importer-username"
+  value        = data.azurerm_key_vault_secret.ccd_importer_username_civil[0].value
+  key_vault_id = module.key-vault.key_vault_id
+}
+
+resource "azurerm_key_vault_secret" "definition-importer-password" {
+  count        = var.env != "ithc" ? 1 : 0
+  name         = "definition-importer-password"
+  value        = data.azurerm_key_vault_secret.ccd_importer_password_civil[0].value
+  key_vault_id = module.key-vault.key_vault_id
+}
