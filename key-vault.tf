@@ -75,13 +75,13 @@ data "azurerm_key_vault" "civil_vault" {
 
 data "azurerm_key_vault_secret" "ccd_importer_username_civil" {
   count        = var.env == "prod" ? 1 : 0
-  name         = "ccd-importer-username"
+  name         = "definition-importer-username"
   key_vault_id = data.azurerm_key_vault.civil_vault[0].id
 }
 
 data "azurerm_key_vault_secret" "ccd_importer_password_civil" {
   count        = var.env == "prod" ? 1 : 0
-  name         = "ccd-importer-password"
+  name         = "definition-importer-password"
   key_vault_id = data.azurerm_key_vault.civil_vault[0].id
 }
 
