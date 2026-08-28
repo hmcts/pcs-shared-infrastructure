@@ -31,6 +31,16 @@ variable "capacity" {
   description = "The size of the Redis cache to deploy. Valid values are 1, 2, 3, 4, 5"
 }
 
+variable "managed_redis_sku_name" {
+  default     = "Balanced_B1"
+  description = "The Azure Managed Redis SKU, in <Tier>_<Size> form. Tiers are Balanced (B), ComputeOptimized (X), FlashOptimized (A) and MemoryOptimized (M)."
+}
+
+variable "private_dns_subscription_id" {
+  default     = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
+  description = "Subscription holding the core-infra private DNS zones."
+}
+
 variable "hmc_service_id" {
   default     = "AAA3"
   description = "Service Id used to filter the messages to subscription"
