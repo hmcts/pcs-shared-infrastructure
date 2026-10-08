@@ -42,8 +42,6 @@ variable "sampling_percentage" {
   type        = number
 }
 
-variable "aks_subscription_id" {}
-
 variable "sdp_reader_principal_id" {
   default     = ""
   description = "Object ID of the SDP identity that reads the sdp-export container. Empty skips the grant."
