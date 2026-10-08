@@ -42,7 +42,8 @@ variable "sampling_percentage" {
   type        = number
 }
 
-variable "sdp_reader_principal_id" {
-  default     = ""
-  description = "Object ID of the SDP identity that reads the sdp-export container. Empty skips the grant."
+variable "sdp_readers" {
+  type        = map(string)
+  default     = {}
+  description = "SDP identities that read the sdp-export container, as name => object ID."
 }
