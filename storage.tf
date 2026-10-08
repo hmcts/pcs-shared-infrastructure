@@ -24,10 +24,10 @@ module "sdp_export_storage" {
   role_assignments           = ["Storage Blob Data Contributor"]
 }
 
-# SDP's read identity, granted on the container only.
+# SDP's read identities, granted on the container only.
 resource "azurerm_role_assignment" "sdp_reader" {
-  count                = var.sdp_reader_principal_id == "" ? 0 : 1
+  for_each             = var.sdp_readers
   scope                = "${module.sdp_export_storage.storageaccount_id}/blobServices/default/containers/${local.sdp_export_container}"
   role_definition_name = "Storage Blob Data Reader"
-  principal_id         = var.sdp_reader_principal_id
+  principal_id         = each.value
 }
