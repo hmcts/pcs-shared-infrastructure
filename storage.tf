@@ -24,10 +24,12 @@ module "sdp_export_storage" {
   role_assignments           = ["Storage Blob Data Contributor"]
 }
 
-# SDP's read identities, granted on the container only.
+# SDP's ingestion identities, granted on the container only. Contributor rather than Reader
+# because Jenkins may only assign the roles in rbac_admin_roles (hmcts/cft-jenkins-infrastructure),
+# and Storage Blob Data Reader isn't one of them outside sandbox.
 resource "azurerm_role_assignment" "sdp_reader" {
   for_each             = var.sdp_readers
   scope                = "${module.sdp_export_storage.storageaccount_id}/blobServices/default/containers/${local.sdp_export_container}"
-  role_definition_name = "Storage Blob Data Reader"
+  role_definition_name = "Storage Blob Data Contributor"
   principal_id         = each.value
 }
