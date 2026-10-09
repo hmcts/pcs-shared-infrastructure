@@ -1,5 +1,6 @@
 locals {
-  sdp_export_container = "sdp-export"
+  sdp_export_container      = "sdp-export"
+  sdp_export_retention_days = 14
 }
 
 module "sdp_export_storage" {
@@ -16,12 +17,41 @@ module "sdp_export_storage" {
   default_action           = "Allow"
   common_tags              = var.common_tags
 
+  enable_versioning               = false
+  blob_soft_delete_retention_days = 7
+
   containers = [
     { name = local.sdp_export_container, access_type = "private" },
   ]
 
   managed_identity_object_id = module.key-vault.managed_identity_objectid[0]
   role_assignments           = ["Storage Blob Data Contributor"]
+}
+
+resource "azurerm_storage_management_policy" "sdp_export_retention" {
+  storage_account_id = module.sdp_export_storage.storageaccount_id
+
+  rule {
+    name    = "delete-exports-after-${local.sdp_export_retention_days}-days"
+    enabled = true
+
+    filters {
+      prefix_match = ["${local.sdp_export_container}/"]
+      blob_types   = ["blockBlob"]
+    }
+
+    actions {
+      base_blob {
+        delete_after_days_since_creation_greater_than = local.sdp_export_retention_days
+      }
+      version {
+        delete_after_days_since_creation = local.sdp_export_retention_days
+      }
+      snapshot {
+        delete_after_days_since_creation_greater_than = local.sdp_export_retention_days
+      }
+    }
+  }
 }
 
 # SDP's ingestion identities, granted on the container only. Contributor rather than Reader
