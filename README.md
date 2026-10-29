@@ -1,6 +1,6 @@
 # PCS product infrastructure
 
-Contains the product infrastructure components per Environment for Possession Claim Service
+Contains the product infrastructure components per Environment for Possession Claim Service.
 
 - Resource Group
 - Azure Key Vault
