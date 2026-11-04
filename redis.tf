@@ -43,7 +43,7 @@ module "pcs_managed_redis" {
 
   clustering_policy = "EnterpriseCluster"
 
-  
+
   access_keys_authentication_enabled = true
   persistence_rdb_backup_frequency   = "6h"
 }
