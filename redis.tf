@@ -48,7 +48,7 @@ module "pcs_managed_redis" {
 }
 
 resource "azurerm_key_vault_secret" "managed_redis_connection_string" {
- 
+
 
   name         = "azure-managed-redis-connection-string"
   value        = "rediss://:${urlencode(module.pcs_managed_redis.primary_access_key)}@${module.pcs_managed_redis.hostname}:${module.pcs_managed_redis.port}?tls=true"
