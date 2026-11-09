@@ -42,15 +42,15 @@ module "pcs_managed_redis" {
 
   clustering_policy = "EnterpriseCluster"
 
-moved {
-  from = module.pcs_managed_redis["aat"]
-  to   = module.pcs_managed_redis
-}
+  moved {
+    from = module.pcs_managed_redis["aat"]
+    to   = module.pcs_managed_redis
+  }
 
-moved {
-  from = azurerm_key_vault_secret.managed_redis_connection_string["aat"]
-  to   = azurerm_key_vault_secret.managed_redis_connection_string
-}
+  moved {
+    from = azurerm_key_vault_secret.managed_redis_connection_string["aat"]
+    to   = azurerm_key_vault_secret.managed_redis_connection_string
+  }
 
 
   access_keys_authentication_enabled = true
