@@ -1,3 +1,13 @@
+moved {
+  from = module.pcs_managed_redis["aat"]
+  to   = module.pcs_managed_redis
+}
+
+moved {
+  from = azurerm_key_vault_secret.managed_redis_connection_string["aat"]
+  to   = azurerm_key_vault_secret.managed_redis_connection_string
+}
+
 module "pcs_redis" {
   source                        = "git@github.com:hmcts/cnp-module-redis?ref=master"
   product                       = var.product
@@ -22,7 +32,6 @@ resource "azurerm_key_vault_secret" "redis_connection_string" {
 
 
 module "pcs_managed_redis" {
-  for_each = toset(contains(["sandbox", "aat"], var.env) ? [var.env] : [])
 
   source = "git@github.com:hmcts/terraform-module-azure-managed-redis?ref=main"
 
@@ -49,10 +58,10 @@ module "pcs_managed_redis" {
 }
 
 resource "azurerm_key_vault_secret" "managed_redis_connection_string" {
-  for_each = module.pcs_managed_redis
+
 
   name         = "azure-managed-redis-connection-string"
-  value        = "rediss://:${urlencode(each.value.primary_access_key)}@${each.value.hostname}:${each.value.port}?tls=true"
+  value        = "rediss://:${urlencode(module.pcs_managed_redis.primary_access_key)}@${module.pcs_managed_redis.hostname}:${module.pcs_managed_redis.port}?tls=true"
   key_vault_id = module.key-vault.key_vault_id
 }
 
